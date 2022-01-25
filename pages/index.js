@@ -35,8 +35,6 @@ export default function PaginaInicial() {
       }).catch((error)=>{
           console.log(error)
       })
-      
-
   }
 
 // codigo funcional de delay
@@ -96,19 +94,8 @@ useEffect(()=>{
 
             <TextField
               value={username}            
-              onKeyUp={function (event) {
-                setUsername(event.target.value)
-
-
-                // console.log('usuário digitou', event.target.value);
-                // // Onde ta o valor?
-                // const valor = event.target.value;
-                // const userLength=valor.length;
-                // console.log( userLength );
-                // // Trocar o valor da variável
-                // if(userLength>=3){
-                // setUsername(event.target.value)                
-                // }
+              onKeyUp={function (event) {           
+                  setUsername(event.target.value)
            }}
               fullWidth
               textFieldColors={{
