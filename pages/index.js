@@ -1,8 +1,9 @@
-import { Box, Button, Text, TextField, Image } from '@skynexui/components';
+import { Box, Button, Text, TextField, Image, ThemeGenerator } from '@skynexui/components';
 import { getParametrizedRoute } from 'next/dist/shared/lib/router/utils/route-regex';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import appConfig from '../config.json';
+import axios from 'axios';
 
 
 
@@ -23,16 +24,36 @@ function Titulo(props) {
 }
 
 export default function PaginaInicial() {
-      // const username = 'Diydar';
       const [username, setUsername] = React.useState ('Diydar');
+      const [info, setinfo] = React.useState({})
       const roteamento = useRouter();
+
+  const getInfo=(  )=>{
+      axios.get(`https://api.github.com/users/${ username }`).then((response)=>{
+          let data=response.data
+          setinfo(data)
+      }).catch((error)=>{
+          console.log(error)
+      })
+      
+
+  }
+
+// codigo funcional de delay
+
+useEffect(()=>{
+  const timeout=setTimeout(() => {
+    getInfo()
+  }, 1000);
+  return ()=>clearTimeout(timeout)
+}, [username])
 
   return (
     <>
       <Box
         styleSheet={{
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          backgroundColor: appConfig.theme.colors.primary[500],
+          backgroundColor: appConfig.theme.colors.primary[900],
           backgroundImage: 'url(https://virtualbackgrounds.site/wp-content/uploads/2020/08/the-matrix-digital-rain.jpg)',
           backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundBlendMode: 'multiply',
         }}
@@ -74,13 +95,20 @@ export default function PaginaInicial() {
             </Text>
 
             <TextField
-              value={username}
-              onChange={function (event) {
-                console.log('usuário digitou', event.target.value);
-                // Onde ta o valor?
-                const valor = event.target.value;
-                // Trocar o valor da variável
-                setUsername(valor);    
+              value={username}            
+              onKeyUp={function (event) {
+                setUsername(event.target.value)
+
+
+                // console.log('usuário digitou', event.target.value);
+                // // Onde ta o valor?
+                // const valor = event.target.value;
+                // const userLength=valor.length;
+                // console.log( userLength );
+                // // Trocar o valor da variável
+                // if(userLength>=3){
+                // setUsername(event.target.value)                
+                // }
            }}
               fullWidth
               textFieldColors={{
@@ -124,13 +152,13 @@ export default function PaginaInicial() {
               minHeight: '240px',
             }}
           >
-            <Image
+            {info != null && typeof info.avatar_url != undefined && <Image
               styleSheet={{
                 borderRadius: '50%',
                 marginBottom: '16px',
               }}
-              src={`https://github.com/${username}.png`}
-            />
+              src={info.avatar_url}
+            />}
 
             <Text
               variant="body4"
@@ -143,6 +171,17 @@ export default function PaginaInicial() {
             >
               {username}
             </Text>
+            <div>
+              {/* componentDidMount() {
+                fetch("https://api.github.com/users/${username}")
+                    .then((res) => res.json())
+                    .then((json) => {
+                        this.setState({
+                            items: json
+                        });
+                    })
+            } */}
+            </div>
           </Box>
           {/* Photo Area */}
         </Box>
