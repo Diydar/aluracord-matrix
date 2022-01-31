@@ -76,10 +76,9 @@ useEffect(()=>{
             as="form"
             onSubmit={function (infosDoEvento) {
               infosDoEvento.preventDefault();
-              console.log('Alguém enviou o form');
-              // forma que o next.js faz a transição entre pagina (tem a chamada de next/router no import no topo da página) os famosos hooks
-              roteamento.push('/chat');
-              // forma padrão do js de trocar de página
+              console.log('Alguém submeteu o form');
+              // roteamento.push('/chat?username=' + username);
+              roteamento.push(`/chat?username=${username}`);
               // window.location.href = '/chat';
             }}
             styleSheet={{
